@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Plant Mission Notebook</title>
+    <style>
+        :root {
+            --deep-green: #1f4031;
+            --leaf: #38825c;
+            --mint: #e2f0e7;
+            --sun: #f0c365;
+            --ink: #2b3a32;
+            --paper: #f9fbf4;
+            --danger: #b5382f;
+            --card-shadow: 0 10px 25px rgba(31, 64, 49, 0.12);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Nunito", "Segoe UI", sans-serif;
+            color: var(--ink);
+            background: linear-gradient(135deg, #fdfbf5 0%, #e6efe8 100%);
+        }
+
+        .page {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #103628;
+            background: #e9f4ec;
+            border: 1px solid #c0dcc8;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .nav-link.active {
+            background: #113f2f;
+            border-color: #113f2f;
+            color: #fff;
+        }
+
+        .hero {
+            background: #fff;
+            border: 2px solid #d8e8dd;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(19, 58, 43, 0.1);
+        }
+
+        .hero h1 { margin: 0; color: var(--deep-green); }
+        .hero p { margin: 10px 0 0; line-height: 1.5; }
+
+        .stack {
+            margin-top: 16px;
+            display: grid;
+            gap: 12px;
+        }
+
+        .block {
+            background: var(--paper);
+            border-radius: 14px;
+            border: 1px solid #d9e7dd;
+            padding: 14px;
+        }
+
+        .block h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #1f5f46;
+        }
+
+        .block p {
+            margin: 8px 0 0;
+            line-height: 1.45;
+            font-size: 0.96rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <nav class="top-nav" aria-label="Main pages">
+            <a class="nav-link" href="index.html">Scanner Game</a>
+            <a class="nav-link" href="academy.html">Plant Notebook</a>
+            <a class="nav-link active" href="product.html">About Product</a>
+        </nav>
+
+        <section class="hero">
+            <h1>About Plant Mission Notebook</h1>
+            <p>Plant Mission Notebook is a study web and game where learners scan real plants using a Teachable Machine model. Correct scans unlock mission progress and create collectible Plant Notebook cards with photo evidence, plant type, and Hong Kong status notes.</p>
+        </section>
+
+        <section class="stack" aria-label="Product overview">
+            <article class="block">
+                <h2>Core Idea</h2>
+                <p>Instead of only searching online for plant names, users play through missions. Every scan is a challenge with confidence thresholds, rewards, and clear progression.</p>
+            </article>
+            <article class="block">
+                <h2>Learning Flow</h2>
+                <p>After each correct scan, the unlocked card stores the plant photo, plant type, mission note, and Hong Kong status information. Students and public users can review these cards to know what kind of plant they found.</p>
+            </article>
+            <article class="block">
+                <h2>Audience</h2>
+                <p>Designed for school projects, biology clubs, and beginner botany learners who need both motivation (game) and knowledge structure (academy guidance).</p>
+            </article>
+            <article class="block">
+                <h2>Technology</h2>
+                <p>Built as a front-end web app with TensorFlow.js and Teachable Machine image model inference in browser. Plant Book data is saved locally in the browser for quick access.</p>
+            </article>
+        </section>
+    </div>
+
+                    <footer style="width: 100%; padding: 24px; text-align: center; background-color: #1f4031; color: #f9fbf4; font-size: 0.9em; margin-top: 40px;">
+        <p style="margin: 0 0 10px 0;">&copy; 2026 Plant Mission Notebook. All rights reserved.</p>
+        <p style="margin: 0 0 10px 0; font-weight: bold;">This Website for 2026 MICOS-HONG KONG Competition Purposes</p>
+        <p style="margin: 0; font-size: 0.85em; opacity: 0.8; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            <b>Disclaimer:</b> The AI identification model is NOT 100% accurate. Plant data and conservation statuses provided are for educational and competition demonstration purposes only, and may not be completely correct. Do not use this AI for definitive identification, foraging, medical, or official conservation decisions.
+        </p>
+    </footer>
+</body>
+</html>

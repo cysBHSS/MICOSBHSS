@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>生物多樣性 AI 守護者 | 2025 MICOS</title>
+    <style>
+        :root {
+            --deep-green: #1f4031;
+            --leaf: #38825c;
+            --mint: #e2f0e7;
+            --sun: #f0c365;
+            --ink: #2b3a32;
+            --paper: #f9fbf4;
+            --danger: #b5382f;
+            --card-shadow: 0 10px 25px rgba(31, 64, 49, 0.12);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Nunito", "Segoe UI", sans-serif;
+            color: var(--ink);
+            background: linear-gradient(135deg, #fdfbf5 0%, #e6efe8 100%);
+        }
+
+        .page {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 24px;
+            display: grid;
+            gap: 22px;
+        }
+
+        .hero {
+            border-radius: 18px;
+            background: linear-gradient(135deg, #1a5b43 0%, #2f8f5d 60%, #78b98f 100%);
+            color: #fff;
+            padding: 24px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            top: -80px;
+            right: -60px;
+        }
+
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(1.6rem, 2.8vw, 2.4rem);
+            letter-spacing: 0.3px;
+        }
+
+        .hero p {
+            margin: 10px 0 0;
+            max-width: 760px;
+            line-height: 1.45;
+            opacity: 0.95;
+        }
+
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 8px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #103628;
+            background: #e9f4ec;
+            border: 1px solid #c0dcc8;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+        .nav-link:hover {
+            transform: translateY(-1px);
+            background: #f4fbf7;
+        }
+
+        .nav-link.active {
+            background: #113f2f;
+            border-color: #113f2f;
+            color: #fff;
+        }
+
+        .layout {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: var(--paper);
+            border-radius: 16px;
+            padding: 18px;
+            box-shadow: var(--card-shadow);
+            border: 2px solid #d9e9de;
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font-size: 1.25rem;
+            color: var(--deep-green);
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .chip {
+            background: #ecf6ef;
+            border-radius: 12px;
+            padding: 10px;
+            border: 1px solid #c8dfd1;
+        }
+
+        .chip strong {
+            display: block;
+            font-size: 1.3rem;
+            color: var(--deep-green);
+            margin-top: 4px;
+        }
+
+        .mission-box {
+            border: 2px dashed #86b99d;
+            border-radius: 14px;
+            padding: 14px;
+            background: #f4fbf7;
+        }
+
+        .mission-title {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+
+        .mission-meta {
+            margin: 8px 0 0;
+            color: #3d5a50;
+            font-size: 0.95rem;
+        }
+
+        .progress-wrap {
+            margin-top: 12px;
+            background: #dceee2;
+            border-radius: 99px;
+            height: 12px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0;
+            background: linear-gradient(90deg, #31a06a, #f0bb4f);
+            transition: width 0.4s ease;
+        }
+
+        .controls {
+            margin-top: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 10px;
+            padding: 12px 16px;
+            font-size: 0.96rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, filter 0.2s ease;
+        }
+
+        button:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.06);
+        }
+
+        .start-btn { background: #1f67c4; color: #fff; }
+        .scan-btn { background: var(--leaf); color: #fff; display: none; }
+        .upload-btn { background: #d67f1f; color: #fff; }
+
+        .camera-shell {
+            margin-top: 14px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 4px solid #8cc4a6;
+            background: #1b1f1d;
+            width: min(100%, 360px);
+            aspect-ratio: 1/1;
+        }
+
+        .camera-shell canvas {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .book-grid {
+            margin-top: 12px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 12px;
+            max-height: 520px;
+            overflow: auto;
+            padding-right: 4px;
+        }
+
+        .book-card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #d4e7da;
+            box-shadow: 0 6px 12px rgba(18, 60, 45, 0.08);
+            animation: rise 0.35s ease;
+        }
+
+        .book-photo {
+            width: 100%;
+            height: 110px;
+            object-fit: cover;
+            display: block;
+            background: #dcebe2;
+        }
+
+        .book-body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Nunito", "Segoe UI", sans-serif;
+            color: var(--ink);
+            background: linear-gradient(135deg, #fdfbf5 0%, #e6efe8 100%);
+        }
+
+        .book-name {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #174231;
+        }
+
+        .book-note {
+            margin: 7px 0 0;
+            font-size: 0.82rem;
+            color: #4b6b5f;
+            line-height: 1.3;
+        }
+
+        .book-type {
+            margin-top: 6px;
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 3px 7px;
+            border-radius: 999px;
+            background: #e8f4ec;
+            color: #1f5d43;
+            border: 1px solid #c7dece;
+        }
+
+        .rare-tag {
+            margin-top: 6px;
+            margin-left: 4px;
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 3px 7px;
+            border-radius: 999px;
+            border: 1px solid #ddc6aa;
+            background: #fff2df;
+            color: #8a4d17;
+        }
+
+        .rare-tag.is-rare {
+            border-color: #cf9f69;
+            background: #ffe8cb;
+            color: #7f3f09;
+            font-weight: 700;
+        }
+
+        .empty {
+            color: #557368;
+            background: #edf7f1;
+            border: 1px dashed #b6d3c3;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .toast {
+            position: fixed;
+            left: 50%;
+            bottom: 24px;
+            transform: translateX(-50%);
+            background: #103b2c;
+            color: #fff;
+            padding: 12px 16px;
+            border-radius: 999px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s ease;
+            z-index: 30;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            z-index: 20;
+            background: rgba(6, 20, 14, 0.7);
+            backdrop-filter: blur(4px);
+            padding: 20px;
+        }
+
+        .modal-content {
+            max-width: 520px;
+            margin: 8vh auto 0;
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            border: 2px solid #d0e4d7;
+            box-shadow: 0 14px 24px rgba(0, 0, 0, 0.2);
+        }
+
+        .modal-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            border: 0;
+            background: transparent;
+            font-size: 1.8rem;
+            color: #456;
+            line-height: 1;
+            padding: 0;
+        }
+
+        #modal-title {
+            margin: 0;
+            color: var(--deep-green);
+        }
+
+        #modal-desc {
+            color: #2f4d40;
+            line-height: 1.45;
+        }
+
+        #modal-image {
+            width: 100%;
+            border-radius: 10px;
+            display: none;
+            margin-top: 10px;
+            max-height: 260px;
+            object-fit: cover;
+        }
+
+        .loader {
+            border: 4px solid #eaf3ee;
+            border-top: 4px solid #2d915f;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 14px auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes rise {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 920px) {
+            .layout {
+                grid-template-columns: 1fr;
+            }
+
+            .book-grid {
+                max-height: initial;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <nav class="top-nav" aria-label="Main pages">
+            <a class="nav-link active" href="index.html">Scanner Game</a>
+            <a class="nav-link" href="academy.html">Plant Notebook</a>
+            <a class="nav-link" href="product.html">About Product</a>
+        </nav>
+
+        <section class="hero">
+            <h1>🌿 生物多樣性 AI 守護者 (Plant AI) 🌿</h1>
+            <p style="opacity: 0.8; font-size: 0.9em; margin-bottom: 15px;">生命與環境的共生：科技守護未來 | 智能守護自然——人工智慧（AI）在生物多樣性保護中的應用</p>
+            <p>本專案運用預先訓練的 Teachable Machine AI 模型，讓民眾可以輕鬆使用手機或電腦鏡頭辨識香港本土的珍稀及特色植物（例如秀英竹、豬籠草、南方安蘭等）。透過寓教於樂的解鎖任務，我們希望增加大眾對 SDGs 及本土植物保育的認識，了解 AI 如何助力生態監測與防護！</p>
+        </section>
+
+        <div class="layout">
+            <section class="panel">
+                <h2>Mission Scanner</h2>
+                <div class="mission-box">
+                    <p id="mission-title" class="mission-title">Loading mission...</p>
+                    <p id="mission-meta" class="mission-meta"></p>
+                    <div class="progress-wrap" aria-label="Mission progress">
+                        <div id="mission-progress" class="progress-bar"></div>
+                    </div>
+                </div>
+
+                <div class="status-grid">
+                    <div class="chip">Points<strong id="points">0</strong></div>
+                    <div class="chip">Correct Streak<strong id="streak">0</strong></div>
+                    <div class="chip">Missions Done<strong id="missions-done">0</strong></div>
+                </div>
+
+                <div class="controls">
+                    <button id="btn-tutorial" class="tutorial-btn" type="button" onclick="showTutorial()" style="background:#4b6b5f; color:#fff;">How to Use (Tutorial)</button>
+                    <hr style="width:100%; border:0; margin: 4px 0;">
+                    <select id="camera-select" style="padding:10px; border-radius:10px; border:1px solid #ccc; max-width:200px; display:none;" onchange="switchCamera()"></select>
+                    <button id="btn-start" class="start-btn" type="button" onclick="startCustomCamera()">Start Camera</button>
+                    <button id="btn-capture" class="scan-btn" type="button" onclick="captureAndIdentify()">Scan Plant</button>
+                    <button id="btn-upload" class="upload-btn" type="button" onclick="document.getElementById('image-upload').click()">Upload Plant Photo</button>
+                    <input type="file" id="image-upload" accept="image/*" style="display: none;" onchange="handleImageUpload(event)">
+                </div>
+
+                <div id="webcam-container" class="camera-shell">
+                    <video id="webcam-video" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover; display: none;"></video>
+                    <canvas id="snapshot-canvas" style="display: none;"></canvas>
+                </div>
+            </section>
+
+            <section class="panel">
+                <h2>Unlocked Plant Book</h2>
+                <p>Each correct scan adds a card with photo, plant type, and Hong Kong status info for student/public use.</p>
+                <div id="book-grid" class="book-grid"></div>
+            </section>
+        </div>
+    </div>
+
+    <div id="plantModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-head">
+                <h3 id="modal-title">Analyzing...</h3>
+                <button class="close-btn" type="button" onclick="closeModal()" aria-label="Close">&times;</button>
+            </div>
+            <div id="loading-spinner" class="loader"></div>
+            <p id="modal-desc"></p>
+            <img id="modal-image" src="" alt="Plant scan result image">
+        </div>
+    </div>
+
+
+    <div id="tutorialModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-head">
+                <h3 style="margin:0; color:var(--deep-green);">How to Use</h3>
+                <button class="close-btn" type="button" onclick="document.getElementById('tutorialModal').style.display='none'">&times;</button>
+            </div>
+            <div style="margin-top: 15px; line-height: 1.6; color: #2f4d40;">
+                <p>Welcome to the Plant Mission Notebook!</p>
+                <ol>
+                    <li><strong>Start Camera:</strong> Click to turn on your device's camera. You can select different cameras (front/rear) from the dropdown above if available.</li>
+                    <li><strong>Scan Plant:</strong> Point the camera at a clear leaf or flower, then click Scan. The system ensures the image contains at least 40% green area.</li>
+                    <li><strong>Upload Photo:</strong> Alternatively, upload an existing plant photo from your gallery.</li>
+                    <li><strong>Unlock Profile:</strong> Once successfully scanned, ecological data (Hong Kong / China conservation status, flowering/fruiting info) will be synced to your Notebook.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="tutorialModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-head">
+                <h3 style="margin:0; color:var(--deep-green);">How to Use</h3>
+                <button class="close-btn" type="button" onclick="document.getElementById('tutorialModal').style.display='none'">&times;</button>
+            </div>
+            <div style="margin-top: 15px; line-height: 1.6; color: #2f4d40;">
+                <p>Welcome to the Plant Mission Notebook!</p>
+                <ol>
+                    <li><strong>Start Camera:</strong> Click to turn on your device's camera. You can select different cameras (front/rear) from the dropdown above if available.</li>
+                    <li><strong>Scan Plant:</strong> Point the camera at a clear leaf or flower, then click Scan. The system ensures the image contains at least 40% green area.</li>
+                    <li><strong>Upload Photo:</strong> Alternatively, upload an existing plant photo from your gallery.</li>
+                    <li><strong>Unlock Profile:</strong> Once successfully scanned, ecological data (Hong Kong / China conservation status, flowering/fruiting info) will be synced to your Notebook.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="tutorialModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-head">
+                <h3 style="margin:0; color:var(--deep-green);">How to Use</h3>
+                <button class="close-btn" type="button" onclick="document.getElementById('tutorialModal').style.display='none'">&times;</button>
+            </div>
+            <div style="margin-top: 15px; line-height: 1.6; color: #2f4d40;">
+                <p>Welcome to the Plant Mission Notebook!</p>
+                <ol>
+                    <li><strong>Start Camera:</strong> Click to turn on your device's camera. You can select different cameras (front/rear) from the dropdown above if available.</li>
+                    <li><strong>Scan Plant:</strong> Point the camera at a clear leaf or flower, then click Scan. The system ensures the image contains at least 40% green area.</li>
+                    <li><strong>Upload Photo:</strong> Alternatively, upload an existing plant photo from your gallery.</li>
+                    <li><strong>Unlock Profile:</strong> Once successfully scanned, ecological data (Hong Kong / China conservation status, flowering/fruiting info) will be synced to your Notebook.</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast" class="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+    <script type="text/javascript">
+        const URL = "https://teachablemachine.withgoogle.com/models/M03FEtg0X/";
+        const BOOK_KEY = "plant-mission-book-v1";
+
+        const missions = [
+            { id: 1, name: "Seedling Start", target: 1, minConfidence: 0.65, points: 15, note: "Observe leaf edge and shape." },
+            { id: 2, name: "Explorer Badge", target: 3, minConfidence: 0.70, points: 40, note: "Try different angle and lighting." },
+            { id: 3, name: "Field Scientist", target: 5, minConfidence: 0.75, points: 80, note: "Compare texture across species." },
+            { id: 4, name: "Botany Champion", target: 8, minConfidence: 0.78, points: 140, note: "Group plants by growth pattern." }
+        ];
+
+        const hongKongPlantCatalog = {
+            "秀英竹": {
+                        "type": "禾本科竹亞科 (Bamboo)",
+                        "shengTai": "生長於山地林下或灌叢",
+                        "hua": "不常見",
+                        "huaQi": "不詳",
+                        "guoShi": "穎果",
+                        "guoQi": "不詳",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "EN 瀕危",
+                        "cnRedBookCategory": "未評估",
+                        "publicNote": "秀英竹是香港特有的珍稀竹類，以植物學家胡秀英命名。",
+                        "rarePrecious": true,
+                        "rarityNote": "受《林務規例》保護，分佈極為狹窄。"
+            },
+            "豬籠草": {
+                        "type": "食蟲植物 (Carnivorous Plant)",
+                        "shengTai": "生長於向陽貧瘠山坡或濕地",
+                        "hua": "總狀花序",
+                        "huaQi": "4月 - 11月",
+                        "guoShi": "蒴果",
+                        "guoQi": "8月 - 12月",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "VU 易危",
+                        "cnRedBookCategory": "VU 易危",
+                        "publicNote": "豬籠草能捕捉並消化昆蟲以補充營養，切勿野外採摘。",
+                        "rarePrecious": true,
+                        "rarityNote": "受香港法例第96章《林區及遊樂區條例》保護。"
+            },
+            "大嶼八角": {
+                        "type": "常綠小喬木 (Evergreen Tree)",
+                        "shengTai": "生長於山地林中",
+                        "hua": "白色至淡黃色",
+                        "huaQi": "2月 - 4月",
+                        "guoShi": "蓇葖果",
+                        "guoQi": "9月 - 10月",
+                        "hkStatus": "Endemic (香港特有種)",
+                        "hkRareCategory": "CR 極危",
+                        "cnRedBookCategory": "CR 極危",
+                        "publicNote": "全球僅見於香港大嶼山，是極度瀕危的珍稀植物。",
+                        "rarePrecious": true,
+                        "rarityNote": "受香港法例第96章《林區及遊樂區條例》保護。"
+            },
+            "棱果花": {
+                        "type": "常綠灌木 (Evergreen Shrub)",
+                        "shengTai": "生長於山谷林下陰濕處",
+                        "hua": "白色或略帶粉紅",
+                        "huaQi": "夏季",
+                        "guoShi": "漿果狀",
+                        "guoQi": "秋季至冬季",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "LC 無危",
+                        "cnRedBookCategory": "未評估",
+                        "publicNote": "花朵造型獨特，果實具棱角，是良好的庭園觀賞植物。",
+                        "rarePrecious": false,
+                        "rarityNote": "在香港有一定分佈，但仍需保護其自然棲息地。"
+            },
+            "珊瑚菜": {
+                        "type": "多年生草本 (Perennial Herb)",
+                        "shengTai": "生長於海濱沙灘",
+                        "hua": "白色複繖形花序",
+                        "huaQi": "6月 - 7月",
+                        "guoShi": "雙懸果",
+                        "guoQi": "8月 - 9月",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "VU 易危",
+                        "cnRedBookCategory": "未評估",
+                        "publicNote": "根部可入藥（北沙參），因過度採挖而變得稀少。",
+                        "rarePrecious": true,
+                        "rarityNote": "生境容易受海岸發展破壞。"
+            },
+            "斑葉女貞": {
+                        "type": "常綠灌木 (Evergreen Shrub)",
+                        "shengTai": "生長於山地林下或林緣",
+                        "hua": "白色",
+                        "huaQi": "春夏季",
+                        "guoShi": "核果",
+                        "guoQi": "秋冬季",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "NT 近危",
+                        "cnRedBookCategory": "未評估",
+                        "publicNote": "葉片常帶有斑紋，具觀賞價值。",
+                        "rarePrecious": true,
+                        "rarityNote": "在香港分佈有限。"
+            },
+            "畫筆南星": {
+                        "type": "多年生草本 (Perennial Herb)",
+                        "shengTai": "生長於林下陰濕地",
+                        "hua": "佛焰苞肉穗花序",
+                        "huaQi": "春季",
+                        "guoShi": "漿果",
+                        "guoQi": "夏秋季",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "VU 易危",
+                        "cnRedBookCategory": "未評估",
+                        "publicNote": "花序特殊，形如畫筆，整株有毒，切勿誤食。",
+                        "rarePrecious": true,
+                        "rarityNote": "分佈範圍狹窄，受棲息地破壞威脅。"
+            },
+            "香港細辛": {
+                        "type": "多年生草本 (Perennial Herb)",
+                        "shengTai": "生長於山谷林下陰濕處",
+                        "hua": "紫褐色",
+                        "huaQi": "冬季至春季",
+                        "guoShi": "蒴果",
+                        "guoQi": "春季至夏季",
+                        "hkStatus": "Endemic (香港特有種)",
+                        "hkRareCategory": "EN 瀕危",
+                        "cnRedBookCategory": "EN 瀕危",
+                        "publicNote": "香港特有的細辛屬植物，具有獨特的花朵結構。",
+                        "rarePrecious": true,
+                        "rarityNote": "受香港法例第96章《林區及遊樂區條例》保護。"
+            },
+            "長葉矛膏菜": {
+                        "type": "食蟲植物 (Carnivorous Plant)",
+                        "shengTai": "生長於向陽濕地",
+                        "hua": "粉紅色或白色",
+                        "huaQi": "夏秋季",
+                        "guoShi": "蒴果",
+                        "guoQi": "秋季",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "EN 瀕危",
+                        "cnRedBookCategory": "未評估",
+                        "publicNote": "葉片具腺毛，能分泌黏液捕捉微小昆蟲。",
+                        "rarePrecious": true,
+                        "rarityNote": "濕地生境受破壞，導致數量大減。"
+            },
+            "南方安蘭": {
+                        "type": "地生蘭 (Terrestrial Orchid)",
+                        "shengTai": "生長於林下陰濕地",
+                        "hua": "小形，不顯眼",
+                        "huaQi": "春季",
+                        "guoShi": "蒴果",
+                        "guoQi": "夏季",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "VU 易危",
+                        "cnRedBookCategory": "未評估",
+                        "publicNote": "一種原始的蘭科植物，對研究蘭科演化具重要意義。",
+                        "rarePrecious": true,
+                        "rarityNote": "蘭科植物全科受保護。"
+            },
+            "香港巴豆": {
+                        "type": "常綠灌木或小喬木 (Evergreen Shrub/Tree)",
+                        "shengTai": "生長於山地林中",
+                        "hua": "黃綠色",
+                        "huaQi": "春季",
+                        "guoShi": "蒴果",
+                        "guoQi": "夏季",
+                        "hkStatus": "Endemic (香港特有種)",
+                        "hkRareCategory": "CR 極危",
+                        "cnRedBookCategory": "CR 極危",
+                        "publicNote": "曾被認為已滅絕，後於青衣島再次發現，極度稀有。",
+                        "rarePrecious": true,
+                        "rarityNote": "受香港法例第96章《林區及遊樂區條例》保護。"
+            },
+            "土沉香": {
+                        "type": "常綠喬木 (Evergreen Tree)",
+                        "shengTai": "常見於風水林及郊野叢林",
+                        "hua": "黃綠色、鐘形",
+                        "huaQi": "4月 - 5月",
+                        "guoShi": "卵形木質蒴果",
+                        "guoQi": "7月 - 8月",
+                        "hkStatus": "Native (香港原生種)",
+                        "hkRareCategory": "NT 近危",
+                        "cnRedBookCategory": "VU 易危",
+                        "publicNote": "昔日香港香木業重要樹種，野外群落常遭非法砍伐。",
+                        "rarePrecious": true,
+                        "rarityNote": "受《林區及遊樂區條例》及《保護瀕危動植物物種條例》保護。"
+            }
+};
+
+        let model;
+        let webcam;
+        let animationId;
+        const game = {
+            missionIndex: 0,
+            missionProgress: 0,
+            points: 0,
+            streak: 0,
+            missionsDone: 0,
+            book: [],
+            missionScannedPlants: []
+        };
+
+        function getCurrentMission() {
+            return missions[Math.min(game.missionIndex, missions.length - 1)];
+        }
+
+        function initGame() {
+            loadBook();
+            renderMission();
+            renderStats();
+            renderBook();
+        }
+
+        async function showTutorial() { document.getElementById('tutorialModal').style.display='block'; }
+
+        async function loadModel() {
+            if (model) {
+                return;
+            }
+
+            const modelURL = URL + "model.json";
+            const metadataURL = URL + "metadata.json";
+            model = await tmImage.load(modelURL, metadataURL);
+        }
+
+        let currentStream;
+
+        async function populateCameras() {
+            const select = document.getElementById("camera-select");
+            try {
+                if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) return;
+                const devices = await navigator.mediaDevices.enumerateDevices();
+                const videoDevices = devices.filter(device => device.kind === 'videoinput');
+                select.innerHTML = "";
+                if (videoDevices.length > 0) {
+                    select.style.display = "inline-block";
+                    videoDevices.forEach((device, index) => {
+                        const option = document.createElement("option");
+                        option.value = device.deviceId;
+                        option.text = device.label || `Camera ${index + 1}`;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (e) {
+                console.error("Camera enumerate error", e);
+            }
+        }
+
+        async function startCustomCamera(deviceId = null) {
+            const startButton = document.getElementById("btn-start");
+            startButton.textContent = "Loading...";
+
+            try {
+                await loadModel();
+                
+                if (currentStream) {
+                    currentStream.getTracks().forEach(track => track.stop());
+                }
+
+                const constraints = { video: deviceId ? { deviceId: { exact: deviceId } } : { facingMode: 'environment' } };
+                currentStream = await navigator.mediaDevices.getUserMedia(constraints);
+                
+                const video = document.getElementById("webcam-video");
+                video.srcObject = currentStream;
+                video.style.display = "block";
+                
+                await new Promise((resolve) => {
+                    video.onloadedmetadata = () => resolve();
+                });
+                
+                // Populate cameras on first load
+                if (!deviceId) {
+                    await populateCameras();
+                }
+
+                startButton.style.display = "none";
+                document.getElementById("btn-capture").style.display = "inline-block";
+                showToast("Camera ready. Start your mission scan.");
+            } catch (error) {
+                startButton.textContent = "Start Camera";
+                showToast("Cannot start camera. Check permission.", true);
+            }
+        }
+
+        async function switchCamera() {
+            const select = document.getElementById("camera-select");
+            const deviceId = select.value;
+            if (deviceId) {
+                await startCustomCamera(deviceId);
+            }
+        }
+
+        async function captureAndIdentify() {
+            const video = document.getElementById("webcam-video");
+            if (!video || !currentStream) {
+                showToast("Start camera first.", true);
+                return;
+            }
+
+            showModal("Analyzing Plant...", "Checking your scan.", true);
+            
+            const canvas = document.getElementById("snapshot-canvas");
+            canvas.width = video.videoWidth || 360;
+            canvas.height = video.videoHeight || 360;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            const imageData = canvas.toDataURL("image/jpeg");
+            document.getElementById("modal-image").src = imageData;
+            document.getElementById("modal-image").style.display = "block";
+            
+            await runPrediction(canvas, imageData);
+        }
+
+        async function handleImageUpload(event) {
+            const file = event.target.files[0];
+            event.target.value = "";
+
+            if (!file) {
+                return;
+            }
+
+            await loadModel();
+            showModal("Analyzing Upload...", "Checking the uploaded image.", true);
+
+            const reader = new FileReader();
+            reader.onload = function readDone(e) {
+                const imageData = e.target.result;
+                const imgElement = new Image();
+                imgElement.src = imageData;
+                imgElement.onload = async function imageLoaded() {
+                    document.getElementById("modal-image").src = imageData;
+                    document.getElementById("modal-image").style.display = "block";
+                    await runPrediction(imgElement, imageData);
+                };
+            };
+            reader.readAsDataURL(file);
+        }
+
+        
+        function calculateGreenPercentage(imageSource) {
+            const tempCanvas = document.createElement("canvas");
+            const ctx = tempCanvas.getContext("2d");
+            tempCanvas.width = imageSource.width || imageSource.videoWidth || 360;
+            tempCanvas.height = imageSource.height || imageSource.videoHeight || 360;
+            if (tempCanvas.width === 0 || tempCanvas.height === 0) return 100;
+            
+            ctx.drawImage(imageSource, 0, 0, tempCanvas.width, tempCanvas.height);
+            const data = ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
+            let greenPixels = 0;
+            let totalPixels = tempCanvas.width * tempCanvas.height;
+            
+            // Computer Vision Heuristic:
+            // Relaxed green criteria to account for shadows, highlights and different plant hues (like yellowish green or dark leaves)
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                
+                // HSL/HSV approximation for green hue dominance
+                // A pixel is considered 'plant-like' if Green is the dominant color, 
+                // OR if it's a dark/shadow plant area (preventing rejection of real plants under bad lighting)
+                if ((g > r * 0.9 && g > b * 0.8 && g > 20) || (g > 50 && r < 100 && b < 100)) {
+                    greenPixels++;
+                }
+            }
+            return (greenPixels / totalPixels) * 100;
+        }
+
+        function analyzeColorVariance(imageSource) {
+            const tempCanvas = document.createElement("canvas");
+            const ctx = tempCanvas.getContext("2d");
+            tempCanvas.width = imageSource.width || imageSource.videoWidth || 360;
+            tempCanvas.height = imageSource.height || imageSource.videoHeight || 360;
+            if (tempCanvas.width === 0 || tempCanvas.height === 0) {
+                return { variance: 0, greenPct: 0 };
+            }
+
+            ctx.drawImage(imageSource, 0, 0, tempCanvas.width, tempCanvas.height);
+            const data = ctx.getImageData(0, 0, tempCanvas.width, tempCanvas.height).data;
+            
+            let count = 0;
+            let sum = 0;
+            let sumSq = 0;
+            let greenPixels = 0;
+
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
+                const brightness = 0.299 * r + 0.587 * g + 0.114 * b;
+
+                sum += brightness;
+                sumSq += brightness * brightness;
+                count += 1;
+
+                if ((g > r * 0.9 && g > b * 0.8 && g > 20) || (g > 50 && r < 100 && b < 100)) {
+                    greenPixels += 1;
+                }
+            }
+
+            const mean = sum / count;
+            const variance = Math.max(0, sumSq / count - mean * mean);
+            const greenPct = (greenPixels / count) * 100;
+
+            return { variance, greenPct };
+        }
+
+        function normalizePlantName(name) {
+            return name.trim().replace(/\s+/g, " ").toLowerCase();
+        }
+
+        function inferPlantProfile(name) {
+            const rawName = name.trim();
+            
+            // Strictly match the name against the catalog keys. NO guessing.
+            let matchedKey = Object.keys(hongKongPlantCatalog).find((key) => rawName === key);
+
+            if (matchedKey) {
+                return hongKongPlantCatalog[matchedKey];
+            }
+
+            return null;
+        }
+
+        async function runPrediction(imageSource, imageData) {
+            const quality = analyzeColorVariance(imageSource);
+            const greenPct = quality.greenPct;
+            
+            // Validate if it is actually a plant using Computer Vision heuristics
+            // Plants are rarely perfectly flat colors, they have texture (variance)
+            if (greenPct < 15) {
+                updateModal("Not a Plant Detected", `We couldn't detect enough plant-like features (Green area: ${greenPct.toFixed(1)}%). Please make sure the plant is clearly visible and well-lit.`);
+                showToast("Not enough plant area detected.", true);
+                return;
+            }
+
+            const isFlatColorSurface = quality.greenPct > 40 && quality.variance < 100;
+            if (isFlatColorSurface) {
+                game.streak = 0;
+                renderStats();
+                updateModal("Invalid Photo", "This looks like a flat artificial surface (like a green wall or paper) because it lacks natural plant texture and shadows. Please scan a real plant.");
+                showToast("Rejected: Flat artificial surface detected.", true);
+                return;
+            }
+
+            const prediction = await model.predict(imageSource);
+            const bestMatch = prediction.reduce((prev, current) =>
+                (prev.probability > current.probability ? prev : current)
+            );
+            const sortedPrediction = [...prediction].sort((a, b) => b.probability - a.probability);
+            const secondBest = sortedPrediction[1] || { probability: 0 };
+            const confidenceGap = bestMatch.probability - secondBest.probability;
+
+            const matchName = bestMatch.className.toLowerCase();
+            const isBackgroundClass =
+                matchName.includes("background") ||
+                matchName.includes("none") ||
+                matchName.includes("背景") ||
+                matchName.includes("無植物");
+
+            if (isBackgroundClass || bestMatch.probability < 0.4) {
+                game.streak = 0;
+                renderStats();
+                updateModal(
+                    "No Valid Plant",
+                    "This scan cannot be used for mission unlock. Try a clearer plant image."
+                );
+                showToast("Sorry, it is not able to detect this as a plant.", true);
+                return;
+            }
+
+            if (bestMatch.probability < 0.65 || confidenceGap < 0.12) {
+                game.streak = 0;
+                renderStats();
+                updateModal(
+                    "Sorry, Not Able",
+                    "Sorry, it is not able to confidently identify this plant yet. Please move closer and use clearer lighting."
+                );
+                showToast("Low confidence. Please scan a clearer plant target.", true);
+                return;
+            }
+
+            const plantDetails = inferPlantProfile(bestMatch.className);
+            if (!plantDetails) {
+                game.streak = 0;
+                renderStats();
+                updateModal(
+                    "Sorry, Not Able",
+                    "Sorry, it is not able to identify this plant with real data yet. Please try another supported plant."
+                );
+                showToast("Sorry, it is not able to identify this plant.", true);
+                return;
+            }
+
+            const mission = getCurrentMission();
+            const confidence = bestMatch.probability;
+            const confidencePct = (confidence * 100).toFixed(1);
+            
+            const normalizedFoundName = normalizePlantName(bestMatch.className);
+            if (game.missionScannedPlants.includes(normalizedFoundName)) {
+                updateModal(
+                    "Already Scanned",
+                    `You already scanned a <b>${bestMatch.className}</b> for this mission. Please find a different plant to complete the mission!`
+                );
+                showToast("Already scanned this plant for the current mission.", true);
+                return;
+            }
+
+            const isMissionSuccess = confidence >= mission.minConfidence;
+
+            if (isMissionSuccess) {
+                game.missionScannedPlants.push(normalizedFoundName);
+                game.missionProgress += 1;
+                game.streak += 1;
+                game.points += 10;
+                addToBook(bestMatch.className, confidence, imageData, mission.note, plantDetails);
+
+                let unlockText = "";
+                if (game.missionProgress >= mission.target) {
+                    game.points += mission.points;
+                    game.missionsDone += 1;
+                    game.missionIndex = Math.min(game.missionIndex + 1, missions.length - 1);
+                    game.missionProgress = 0;
+                    game.missionScannedPlants = [];
+                    unlockText = `<br><br><strong>Mission unlocked:</strong> ${mission.name} completed! Bonus +${mission.points} points.`;
+                    showToast("Mission unlocked. New mission available.");
+                } else {
+                    showToast("Correct scan. Plant added to your book.");
+                }
+
+                updateModal(
+                    "Correct Scan",
+                    `<strong>Plant:</strong> ${bestMatch.className}<br>
+                     <strong>Confidence:</strong> ${confidencePct}%<br>
+                     <strong>Mission success:</strong> Yes${unlockText}`
+                );
+            } else {
+                game.streak = 0;
+                updateModal(
+                    "Close, But Not Enough",
+                    `<strong>Detected:</strong> ${bestMatch.className}<br>
+                     <strong>Confidence:</strong> ${confidencePct}%<br>
+                     <strong>Need:</strong> ${(mission.minConfidence * 100).toFixed(0)}% or above for this mission.<br><br>
+                     Try better light and focus for a stronger result.`
+                );
+                showToast("Scan not strong enough for mission unlock.", true);
+            }
+
+            renderMission();
+            renderStats();
+            renderBook();
+        }
+
+        function addToBook(name, confidence, imageData, note, plantDetails = null) {
+            const resolvedDetails = plantDetails || inferPlantProfile(name);
+            if (!resolvedDetails) {
+                return false;
+            }
+            const normalizedName = normalizePlantName(name);
+            const existing = game.book.find((item) => item.normalizedName === normalizedName);
+
+            if (existing) {
+                existing.scanCount += 1;
+                existing.type = resolvedDetails.type;
+                existing.hkStatus = resolvedDetails.hkStatus;
+                existing.publicNote = resolvedDetails.publicNote;
+                existing.rarePrecious = resolvedDetails.rarePrecious;
+                existing.rarityNote = resolvedDetails.rarityNote;
+                existing.shengTai = existing.shengTai || "陸生 / 常見";
+                existing.hua = existing.hua || "視乎品種";
+                existing.huaQi = existing.huaQi || "視乎品種";
+                existing.guoShi = existing.guoShi || "視乎品種";
+                existing.guoQi = existing.guoQi || "視乎品種";
+                existing.hkRareCategory = existing.hkRareCategory || (resolvedDetails.rarePrecious ? "VU 易危" : "LC 無危");
+                existing.cnRedBookCategory = existing.cnRedBookCategory || (resolvedDetails.rarePrecious ? "NT 近危" : "LC 無危");
+                if (confidence > existing.confidence) {
+                    existing.confidence = confidence;
+                    existing.imageData = imageData;
+                }
+                existing.lastSeen = Date.now();
+            } else {
+                game.book.push({
+                    name,
+                    normalizedName,
+                    confidence,
+                    imageData,
+                    scanCount: 1,
+                    note,
+                    type: resolvedDetails.type,
+                    hkStatus: resolvedDetails.hkStatus,
+                    publicNote: resolvedDetails.publicNote,
+                    rarePrecious: resolvedDetails.rarePrecious,
+                    rarityNote: resolvedDetails.rarityNote,
+                    shengTai: resolvedDetails.shengTai || "陸生 / 常見",
+                    hua: resolvedDetails.hua || "視乎品種",
+                    huaQi: resolvedDetails.huaQi || "視乎品種",
+                    guoShi: resolvedDetails.guoShi || "視乎品種",
+                    guoQi: resolvedDetails.guoQi || "視乎品種",
+                    hkRareCategory: resolvedDetails.hkRareCategory || (resolvedDetails.rarePrecious ? "VU 易危" : "LC 無危"),
+                    cnRedBookCategory: resolvedDetails.cnRedBookCategory || (resolvedDetails.rarePrecious ? "NT 近危" : "LC 無危"),
+                    lastSeen: Date.now()
+                });
+            }
+
+            game.book.sort((a, b) => b.lastSeen - a.lastSeen);
+            localStorage.setItem(BOOK_KEY, JSON.stringify(game.book));
+            return true;
+        }
+
+        function loadBook() {
+            try {
+                const raw = localStorage.getItem(BOOK_KEY);
+                game.book = raw ? JSON.parse(raw) : [];
+                game.book = game.book.map((plant) => {
+                    if (!plant.type || !plant.hkStatus || !plant.publicNote || typeof plant.rarePrecious !== "boolean" || !plant.rarityNote) {
+                        const inferred = inferPlantProfile(plant.name || "Unknown Plant");
+                        if (!inferred) {
+                            return null;
+                        }
+                        return {
+                            ...plant,
+                            type: plant.type || inferred.type,
+                            hkStatus: plant.hkStatus || plant.academyInfo || inferred.hkStatus,
+                            publicNote: plant.publicNote || plant.studyHint || inferred.publicNote,
+                            rarePrecious: typeof plant.rarePrecious === "boolean" ? plant.rarePrecious : inferred.rarePrecious,
+                            rarityNote: plant.rarityNote || inferred.rarityNote
+                        };
+                    }
+
+                    return plant;
+                }).filter(Boolean);
+
+                localStorage.setItem(BOOK_KEY, JSON.stringify(game.book));
+            } catch (error) {
+                game.book = [];
+            }
+        }
+
+        function renderMission() {
+            const mission = getCurrentMission();
+            const progressText = `${game.missionProgress}/${mission.target}`;
+            const progressPct = Math.min(100, (game.missionProgress / mission.target) * 100);
+
+            document.getElementById("mission-title").textContent = `Mission ${mission.id}: ${mission.name}`;
+            document.getElementById("mission-meta").textContent =
+                `Need ${mission.target} correct scans with ${(mission.minConfidence * 100).toFixed(0)}% confidence. Progress ${progressText}.`;
+            document.getElementById("mission-progress").style.width = `${progressPct}%`;
+        }
+
+        function renderStats() {
+            document.getElementById("points").textContent = String(game.points);
+            document.getElementById("streak").textContent = String(game.streak);
+            document.getElementById("missions-done").textContent = String(game.missionsDone);
+        }
+
+        function renderBook() {
+            const grid = document.getElementById("book-grid");
+
+            if (!game.book.length) {
+                grid.innerHTML = '<div class="empty">No plant unlocked yet. Complete correct scans to fill your book.</div>';
+                return;
+            }
+
+            grid.innerHTML = game.book.map((plant) => `
+                <article class="book-card">
+                    <img class="book-photo" src="${plant.imageData}" alt="${plant.name}">
+                    <div class="book-body">
+                        <h3 class="book-name">${plant.name}</h3>
+                        <span class="book-type">植物種類: ${plant.type || "資料不足"}</span>
+                        <span class="rare-tag ${plant.rarePrecious ? "is-rare" : ""}">Rare & Precious in HK: ${plant.rarePrecious ? "Yes" : "No"}</span>
+                        <div class="book-note">
+                            <div>Best config: ${(plant.confidence * 100).toFixed(1)}% | Scans: ${plant.scanCount}</div>
+                            <hr style="border:0; border-top:1px dashed #c7dece; margin: 6px 0;">
+                            <strong>植物種類:</strong> ${plant.type || "植物"}<br>
+                            <strong>生態資料:</strong> ${plant.shengTai || "陸生 / 常見"}<br>
+                            <strong>花:</strong> ${plant.hua || "視乎品種"} | <strong>花期:</strong> ${plant.huaQi || "視乎品種"}<br>
+                            <strong>果實:</strong> ${plant.guoShi || "視乎品種"} | <strong>果期:</strong> ${plant.guoQi || "視乎品種"}<br>
+                            <strong>《香港稀有及珍貴植物》:</strong> ${plant.hkRareCategory || (plant.rarePrecious?"VU 易危":"LC 無危")}<br>
+                            <strong>《中國植物紅皮書》:</strong> ${plant.cnRedBookCategory || (plant.rarePrecious?"NT 近危":"LC 無危")}<br>
+                            <hr style="border:0; border-top:1px dashed #c7dece; margin: 6px 0;">
+                            <div><em>${plant.hkStatus}</em></div>
+                        </div>
+                    </div>
+                </article>
+            `).join("");
+        }
+
+        function showModal(title, text, isLoading = false) {
+            document.getElementById("plantModal").style.display = "block";
+            updateModal(title, text, isLoading);
+        }
+
+        function updateModal(title, text, isLoading = false) {
+            document.getElementById("modal-title").innerHTML = title;
+            document.getElementById("modal-desc").innerHTML = text;
+            document.getElementById("loading-spinner").style.display = isLoading ? "block" : "none";
+        }
+
+        function closeModal() {
+            document.getElementById("plantModal").style.display = "none";
+            document.getElementById("modal-image").style.display = "none";
+        }
+
+        let toastTimer;
+        function showToast(text, isWarning = false) {
+            const toast = document.getElementById("toast");
+            toast.textContent = text;
+            toast.style.background = isWarning ? "#7f2f2a" : "#103b2c";
+            toast.classList.add("show");
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => {
+                toast.classList.remove("show");
+            }, 2100);
+        }
+
+        window.addEventListener("beforeunload", () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        });
+
+        initGame();
+    </script>
+
+                    <footer style="width: 100%; padding: 24px; text-align: center; background-color: #1f4031; color: #f9fbf4; font-size: 0.9em; margin-top: 40px;">
+        <p style="margin: 0 0 10px 0;">&copy; 2026 HKSKH Bishop Hall Secondary School @ Alan Chen, Bosco Lam, Tony Leung. All rights reserved.</p>
+        <p style="margin: 0 0 10px 0; font-weight: bold;">This Website for 2025 MICOS - Hong Kong Competition Purposes</p>
+        <p style="margin: 0; font-size: 0.85em; opacity: 0.8; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            <b>Disclaimer:</b> The AI identification model is NOT 100% accurate. Plant data and conservation statuses provided are for educational and competition demonstration purposes only, and may not be completely correct. Do not use this AI for definitive identification, foraging, medical, or official conservation decisions.
+        </p>
+    </footer>
+</body>
+</html>

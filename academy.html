@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Notebook Viewer</title>
+    <style>
+        :root {
+            --deep-green: #1f4031;
+            --leaf: #38825c;
+            --mint: #e2f0e7;
+            --sun: #f0c365;
+            --ink: #2b3a32;
+            --paper: #f9fbf4;
+            --danger: #b5382f;
+            --card-shadow: 0 10px 25px rgba(31, 64, 49, 0.12);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Nunito", "Segoe UI", sans-serif;
+            color: var(--ink);
+            background: linear-gradient(135deg, #fdfbf5 0%, #e6efe8 100%);
+        }
+
+        .page {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+
+        .top-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: #103628;
+            background: #e9f4ec;
+            border: 1px solid #c0dcc8;
+            padding: 8px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+
+        .nav-link.active {
+            background: #113f2f;
+            border-color: #113f2f;
+            color: #fff;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #1c5d44, #3f9a6d);
+            color: #fff;
+            padding: 22px;
+            border-radius: 16px;
+            box-shadow: 0 10px 20px rgba(14, 57, 41, 0.15);
+        }
+
+        .hero h1 { margin: 0; }
+        .hero p { margin: 10px 0 0; line-height: 1.45; }
+
+        .grid {
+            margin-top: 16px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+
+        .card {
+            border-radius: 14px;
+            background: #fff;
+            border: 2px solid #d3e6da;
+            padding: 14px;
+        }
+
+        .card h2 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: var(--deep-green);
+        }
+
+        .card p {
+            margin: 8px 0 0;
+            line-height: 1.4;
+            font-size: 0.95rem;
+        }
+
+        .badge {
+            display: inline-block;
+            margin-top: 8px;
+            border-radius: 999px;
+            background: var(--soft);
+            border: 1px solid #cadfce;
+            padding: 3px 8px;
+            font-size: 0.8rem;
+            color: #2a5f48;
+        }
+
+        .badge-rare {
+            display: inline-block;
+            margin-top: 8px;
+            margin-left: 6px;
+            border-radius: 999px;
+            background: #fff1dc;
+            border: 1px solid #dfc39f;
+            padding: 3px 8px;
+            font-size: 0.8rem;
+            color: #8a4d17;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <nav class="top-nav" aria-label="Main pages">
+            <a class="nav-link" href="index.html">Scanner Game</a>
+            <a class="nav-link active" href="academy.html">Plant Notebook</a>
+            <a class="nav-link" href="product.html">About Product</a>
+        </nav>
+
+        <section class="hero">
+            <h1>Plant Notebook</h1>
+            <p>This page is for students and the public to view unlocked plants. Each card shows plant photo, plant type, and Hong Kong status notes so users can quickly know what kind of plant it is.</p>
+        </section>
+
+        <section id="notebook-grid" class="grid" aria-label="Plant notebook cards"></section>
+    </div>
+
+    <script>
+        const BOOK_KEY = "plant-mission-book-v1";
+
+        function loadNotebook() {
+            const grid = document.getElementById("notebook-grid");
+            let book = [];
+
+            try {
+                const raw = localStorage.getItem(BOOK_KEY);
+                book = raw ? JSON.parse(raw) : [];
+            } catch (error) {
+                book = [];
+            }
+
+            if (!book.length) {
+                grid.innerHTML = '<article class="card"><h2>No unlocked plant yet</h2><p>Go to Scanner Game, complete a correct plant scan, then come back to this notebook page.</p><span class="badge">Tip: upload a clear plant photo</span></article>';
+                return;
+            }
+
+            book.sort((a, b) => (b.lastSeen || 0) - (a.lastSeen || 0));
+            grid.innerHTML = book.map((plant) => {
+                const type = plant.type || "Flowering Plant (Unconfirmed Species)";
+                const hkStatus = plant.hkStatus || plant.academyInfo || "Hong Kong status pending detailed species confirmation.";
+                const publicNote = plant.publicNote || plant.studyHint || "Observe leaf shape and flower details for better identification.";
+                const rarePrecious = typeof plant.rarePrecious === "boolean"
+                    ? plant.rarePrecious
+                    : /conservation-sensitive|rare|precious/i.test(`${hkStatus} ${plant.rarityNote || ""}`);
+                const rarityNote = plant.rarityNote || (rarePrecious
+                    ? "Potentially rare/precious in Hong Kong. Verify exact species before handling."
+                    : "No rare/precious flag from current notebook data.");
+                const confidenceText = plant.confidence ? `${(plant.confidence * 100).toFixed(1)}%` : "N/A";
+
+                return `
+                    <article class="card">
+                        <img src="${plant.imageData}" alt="${plant.name}" style="width:100%;height:160px;object-fit:cover;border-radius:10px;display:block;background:#dcebe2;">
+                        <h2 style="margin-top:10px;">${plant.name}</h2>
+                        <p>
+                        <strong>植物種類 (Plant type):</strong> ${type}<br>
+                        <strong>生態資料:</strong> ${plant.shengTai || "陸生 / 常見"}<br>
+                        <strong>花:</strong> ${plant.hua || "視乎品種"} | <strong>花期:</strong> ${plant.huaQi || "視乎品種"}<br>
+                        <strong>果實:</strong> ${plant.guoShi || "視乎品種"} | <strong>果期:</strong> ${plant.guoQi || "視乎品種"}<br>
+                        <strong>《香港稀有及珍貴植物》類別註解:</strong> ${plant.hkRareCategory || (rarePrecious?"VU 易危":"LC 無危")}<br>
+                        <strong>《中國植物紅皮書》類別註解:</strong> ${plant.cnRedBookCategory || (rarePrecious?"NT 近危":"LC 無危")}<br>
+                        <br>
+                        <strong>Hong Kong status:</strong> ${hkStatus}<br>
+                        <strong>Rare note:</strong> ${rarityNote}<br>
+                        <strong>Best confidence:</strong> ${confidenceText} | <strong>Scans:</strong> ${plant.scanCount || 1}<br>
+                        <strong>Public note:</strong> ${publicNote}
+                    </p>
+                        <span class="badge">Mission note: ${plant.note || "N/A"}</span>
+                        <span class="badge-rare">Rare & Precious in HK: ${rarePrecious ? "Yes" : "No"}</span>
+                    </article>
+                `;
+            }).join("");
+        }
+
+        loadNotebook();
+    </script>
+
+                    <footer style="width: 100%; padding: 24px; text-align: center; background-color: #1f4031; color: #f9fbf4; font-size: 0.9em; margin-top: 40px;">
+        <p style="margin: 0 0 10px 0;">&copy; 2026 Plant Mission Notebook. All rights reserved.</p>
+        <p style="margin: 0 0 10px 0; font-weight: bold;">This Website for 2026 MICOS-HONG KONG Competition Purposes</p>
+        <p style="margin: 0; font-size: 0.85em; opacity: 0.8; max-width: 800px; margin-left: auto; margin-right: auto; line-height: 1.5;">
+            <b>Disclaimer:</b> The AI identification model is NOT 100% accurate. Plant data and conservation statuses provided are for educational and competition demonstration purposes only, and may not be completely correct. Do not use this AI for definitive identification, foraging, medical, or official conservation decisions.
+        </p>
+    </footer>
+</body>
+</html>
